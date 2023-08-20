@@ -1,0 +1,108 @@
+
+-->The below mentioned are the library inclusion format of C program;
+We are using Liquid Crystal library for LCD, Software Serial library for
+GSM and Sim900 inclusion and program accordingly, basically Hardware needs
+to identify themselves in the IDE, so these library functions are necessary;
+Also DHT library for DHT sensor.
+
+#include <LiquidCrystal.h>
+#include <SoftwareSerial.h>
+#include "DHT.h"
+
+
+--> We are here defining which sensor is connected onto which pin of
+Arduino UNO R3, like here M_sensor(M_sensor is a random variable name)
+which is Moisture sensor is connected onto A5, of Arduino that is Analog pin 
+5, DHTPIN(Variable name for DHT sensor) is on Digital PIN 8.
+The term "#define DHTTYPE DHT11" specifies the type of DHT sensor used.
+
+#define M_Sensor A5
+#define DHTPIN 8
+#define DHTTYPE DHT11
+
+
+-->Here the Software Serial is the library or initalization function,
+for specifying the ports onto which TX and RX of SIM900 are connected 
+onto TX and Rx of Uno,for UART communication, so here it is TX and RX 
+of Sim900 to 0(RX) and 
+1(TX) of Uno are conncted along(note: 0&1 pin of Uno is PWM pins and 
+are digital pins, also)
+Liquid Crystal initalization and lcd is the variable,(similarly myserial
+is als0 our own variable,forgot to mention)
+so this line means "lcd(2, 3, 4, 5, 6, 7)" Rx and Tx of LCd is connected to
+2 and 3(both digital pins) of Uno and 4,5,6 & 7 means D4,D5,D6 & D7 of 
+LCD to uno's 4,5,6&7 pins(all digital).
+ 
+SoftwareSerial mySerial(1, 0);
+LiquidCrystal lcd(2, 3, 4, 5, 6, 7);
+
+
+
+--> These are variables connected to the pins mentioned after "=" sign
+i.e fan as seen in circuit, basically relay is connected to 10, bulb's 
+relay to 9 and heater's relay to 13(all digital pins)
+ 
+int FAN = 10;
+int relay = 9;
+int bulb = 13;
+
+
+-->Serial.begin(9600); this means serial communication begins betwe..
+Uno and Arduino ide at baud rate(communication speed) of 9600
+-->mySerial.begin(9600);this means serial communication begins betwe..
+Uno and GSM(sim900D) at baud rate(communication speed) of 9600
+
+lcd.begin(16, 2);LCD is started so that it can be programmed to operate
+and (16,2) means 16 coloumns and 2 rows type LCD.
+basically it can display 16*2 byte at a time.
+
+  
+--> all these below means, we are specifying how the pins, that these
+components are connected to must act as, i.e either input or output
+as we see all are outputs...
+  pinMode(bulb,OUTPUT);
+  pinMode(relay,OUTPUT);
+  pinMode(FAN,OUTPUT);
+  pinMode(12,OUTPUT);
+
+
+
+-->also Major diff between Void loop and setup is 
+setup only to initalize the variables and set pinmode and serial comm
+setup 
+whereas the void loop block keeps executing until the uno is tunred off
+
+
+Other commands gist-->
+lcd.setCursor(2,1)
+in this example the command sets the cursor of lcd screen at 2 coloumn
+and 2nd row(note since counting stars from 0, 1 means 2nd row).
+
+
+lcd.print();
+prints any message in this block on LCD screen
+
+
+digitalWrite();
+sets the output of the digital pins
+ex:digitalWrite(FAN, HIGH); upon condition of if loop being satisfied
+this command if found in if loop block, for example,will set the output 
+of variable FAN to whichever digital pin it is conncted to HIGH
+
+
+delay(1000);
+this command delays the program 
+so 1000 here means 1 second, basically it counts time in milliseconds
+therefore 1000ms=1 second.
+
+all other commands are ought to be clear i suppose;
+GSM communication works like this:
+you must have noticed in Arduino IDE, whatever u print in Serial.println
+command is show on the terminal, so the terminal outputs act as input 
+for GSM module,
+so to initate or set a GSM module to send SMS text the serial 
+output console should print AT+CMGF=1;
+which will initate the GSM module in text message sending mode,
+
+i guess this example must make it clear what other commands mean in
+GSM sensor module block in the code  
